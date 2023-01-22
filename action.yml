@@ -5,7 +5,7 @@ branding:
   color: gray-dark
 inputs:
   libharu-version:
-    default: 2.4.3
+    default: latest
     required: false
     description: version of libharu
 runs:
@@ -15,13 +15,38 @@ runs:
       shell: bash
       run: |
         mkdir -p /tmp/libharu/build
-    - name: Download libharu source
+
+    - name: Get libharu latest version
+      if: inputs.libharu-version == 'latest'
+      shell: bash
+      run: |
+        echo "LIBHARU_LATEST_VERSION=`curl -s https://api.github.com/repos/libharu/libharu/releases/latest | jq -r '.tag_name' | cut -c 2-6`" >> $GITHUB_ENV
+    - name: Download libharu latest version
+      if: inputs.libharu-version == 'latest'
+      shell: bash
+      run: |
+        cd /tmp/libharu
+        wget https://github.com/libharu/libharu/archive/refs/tags/v${{ env.LIBHARU_LATEST_VERSION }}.tar.gz -O v${{ env.LIBHARU_LATEST_VERSION }}.tar.gz
+        tar -xvzf v${{ env.LIBHARU_LATEST_VERSION }}.tar.gz
+    - name: Build & Install libharu latest
+      if: inputs.libharu-version == 'latest'
+      shell: bash
+      run: |
+        cd /tmp/libharu/build
+        sudo cmake ../libharu-${{ env.LIBHARU_LATEST_VERSION }}
+        sudo make clean
+        sudo make
+        sudo make install
+
+    - name: Download libharu v${{ inputs.libharu-version }}
+      if: inputs.libharu-version != 'latest'
       shell: bash
       run: |
         cd /tmp/libharu
         wget https://github.com/libharu/libharu/archive/refs/tags/v${{ inputs.libharu-version }}.tar.gz -O v${{ inputs.libharu-version }}.tar.gz
         tar -xvzf v${{ inputs.libharu-version }}.tar.gz
-    - name: Build & Install libharu
+    - name: Build & Install libharu v${{ inputs.libharu-version }}
+      if: inputs.libharu-version != 'latest'
       shell: bash
       run: |
         cd /tmp/libharu/build
