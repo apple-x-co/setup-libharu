@@ -1,4 +1,4 @@
-name: Install libharu library
+name: Setup libharu
 description: Install libharu library
 inputs:
   libharu-version:
