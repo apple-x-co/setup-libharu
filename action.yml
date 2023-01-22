@@ -19,20 +19,21 @@ runs:
     - name: Get libharu latest version
       if: inputs.libharu-version == 'latest'
       shell: bash
-      run: echo "LIBHARU_LATEST_VERSION=`curl -s https://api.github.com/repos/libharu/libharu/releases/latest | jq -r '.tag_name'`" >> $GITHUB_ENV
+      run: |
+        echo "LIBHARU_LATEST_VERSION=`curl -s https://api.github.com/repos/libharu/libharu/releases/latest | jq -r '.tag_name'`" >> $GITHUB_ENV
     - name: Download libharu latest version
       if: inputs.libharu-version == 'latest'
       shell: bash
       run: |
         cd /tmp/libharu
-        wget https://github.com/libharu/libharu/archive/refs/tags/${{ LIBHARU_LATEST_VERSION }}.tar.gz -O ${{ LIBHARU_LATEST_VERSION }}.tar.gz
-        tar -xvzf ${{ LIBHARU_LATEST_VERSION }}.tar.gz
+        wget https://github.com/libharu/libharu/archive/refs/tags/${{ env.LIBHARU_LATEST_VERSION }}.tar.gz -O ${{ env.LIBHARU_LATEST_VERSION }}.tar.gz
+        tar -xvzf ${{ env.LIBHARU_LATEST_VERSION }}.tar.gz
     - name: Build & Install libharu latest
       if: inputs.libharu-version == 'latest'
       shell: bash
       run: |
         cd /tmp/libharu/build
-        sudo cmake ../libharu-${{ LIBHARU_LATEST_VERSION:1:5 }}
+        sudo cmake ../libharu-${{ env.LIBHARU_LATEST_VERSION:1:5 }}
         sudo make clean
         sudo make
         sudo make install
