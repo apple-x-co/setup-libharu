@@ -13,7 +13,7 @@ jobs:
       - name: Setup libharu
         uses: ./
 
-  v2-4-3:
+  version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,12 +21,3 @@ jobs:
         uses: ./
         with:
           libharu-version: 2.4.3
-
-  v2-4-2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup libharu
-        uses: ./
-        with:
-          libharu-version: 2.4.2
