@@ -1,5 +1,8 @@
 name: Setup libharu
 description: Install libharu library
+branding:
+  icon: anchor
+  color: gray-dark
 inputs:
   libharu-version:
     default: 2.4.3
