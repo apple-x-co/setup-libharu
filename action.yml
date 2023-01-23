@@ -20,7 +20,7 @@ runs:
       if: inputs.libharu-version == 'latest'
       shell: bash
       run: |
-        echo "LIBHARU_LATEST_VERSION=`curl -s https://api.github.com/repos/libharu/libharu/releases/latest | jq -r '.tag_name' | cut -c 2-6`" >> $GITHUB_ENV
+        echo "LIBHARU_LATEST_VERSION=`curl -s https://api.github.com/repos/libharu/libharu/releases/latest | jq -r '.tag_name' | cut -c 2-`" >> $GITHUB_ENV
     - name: Download libharu latest version
       if: inputs.libharu-version == 'latest'
       shell: bash
